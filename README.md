@@ -1,44 +1,40 @@
-# StatefulReconnection
+# LocalizedStatefulReconnection
 
-This is an **experimental** alternative UX for reconnection in Blazor Server. Once you add `<StatefulReconnection />` to your `App.razor` component, the behavior will change as follows:
+This package is a fork of this [git repo](https://github.com/SteveSandersonMS/StatefulReconnection) by [Steve Sanderson](https://github.com/SteveSandersonMS).
 
- * Reconnection is attempted more eagerly (defaults to every 1 second instead of defaulting to every 20 seconds)
- * If the server is reached but the user's circuit is gone, it auto-reloads the page so the user can continue
-   * This differs from Blazor Server's traditional behavior, which is to prompt the user to reload manually
- * Attempts to preserve form state across new circuits
-   * When connection is lost, client-side JS code automatically captures the state of any form fields in the page.
-   * If the page is reloaded (e.g., automatically because the server no longer has the user's circuit, or if the user reloads manually), then client-side JS code will attempt to restore the state of the form fields in the new page
-   * It also preserves element focus across these circuit restarts
+Please refer to his repository for the original documentation.
 
-![image](https://github.com/dotnet/aspnetcore/assets/1101362/e7d22948-8733-447d-a1b2-f6af3699edc7)
+The goal of this fork is to provide a way to localize the texts used in the reconnection dialog.
 
-The result is:
+## Changes
 
- * If the user is on a read-only page, then in many cases it will auto-reload and continue without user interaction
- * If the user has a form on the page, then in many cases it will preserve their unsaved edits and focus state
+- Framework target bumped to .NET 8.0 from .NET 7.0.
 
-However, it *only* preserves the state of form elements. It cannot preserve the state of any .NET objects that are being modified on the server, as that would involve the developer implementing logic manually to use a persistent store for those objects (for example using [the pattern demonstrated here](https://github.com/SteveSandersonMS/CircuitPersisterExample)).
+- `StatefulReconnection` is now called `LocalizedStatefulReconnection`.
 
-### Installation
+- Added 3 parameters to the `LocalizedStatefulReconnection` class:
+  - `RejoiningMessage`: The text to be displayed in the reconnection dialog.
+  - `CheckInternetMessage`: The text to be displayed under the rejoingning message when the reconnection takes too long.
+  - `ReloadMessage`: The text of the button to reload the page.
 
-Reference the package `StatefulReconnection` using VS or the command line, e.g.:
+## Installation
 
-    dotnet add package StatefulReconnection
+```
+dotnet add package LocalizedStatefulReconnection
+```
 
-In your `App.razor`, add `<StatefulReconnection />` before or after your `<Router />`. Example:
+## Usage
 
-```razor
-<StatefulReconnection />
+In _Imports.razor add:
+```csharp
+@inject IStringLocalizer<App> Loc;
+```
+
+In your `App.razor` file add `<LocalizedStatefulReconnection />` before or after your `<Router />`. Example: 
+```csharp
+<LocalizedStatefulReconnection RejoiningMessage="@Loc["RejoiningMessage"]" CheckInternetMessage="@Loc["CheckInternetMessage"]" ReloadMessage="@Loc["ReloadMessage"]" />
 
 <Router AppAssembly="@typeof(App).Assembly">
     ... leave contents unchanged ...
 </Router>
 ```
-
-### Feedback
-
-The purpose of this package is to explore whether this kind of client-side form field preservation would be useful to provide a better user experience around reconnection with Blazor Server.
-
-It is not yet expected to work perfectly in all cases, and it is not really customizable or extensible within the current implementation.
-
-If this scenario is important to you, please try this out and let us know if it actually helps.

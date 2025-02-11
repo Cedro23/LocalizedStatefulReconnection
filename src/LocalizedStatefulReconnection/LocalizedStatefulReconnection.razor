@@ -8,13 +8,17 @@
 <div class="reconnect-overlay" @ref="overlay">
     <div class="reconnect-dialog">
         <div class="lds-ripple"><div></div><div></div></div>
-        <p>Rejoining the server...</p>
-        <p class="check-internet">Check your internet connection</p>
-        <button onclick="location.reload()" style="display: none">Reload</button>
+        <p>@RejoiningMessage</p>
+        <p class="check-internet">@CheckInternetMessage</p>
+        <button onclick="location.reload()" style="display: none">@ReloadMessage</button>
     </div>
 </div>
 
 @code {
+    [Parameter] public string RejoiningMessage { get; set; } = "Rejoining the server...";
+    [Parameter] public string CheckInternetMessage { get; set; } = "Check your internet connection";
+    [Parameter] public string ReloadMessage { get; set; } = "Reload";
+
     private ElementReference overlay;
     private Task<IJSObjectReference> _moduleLoader = default!;
     private bool _disposed;
@@ -23,7 +27,7 @@
     {
         if (firstRender && !_disposed)
         {
-            _moduleLoader = JS.InvokeAsync<IJSObjectReference>("import", "./_content/StatefulReconnection/StatefulReconnection.razor.js").AsTask();
+            _moduleLoader = JS.InvokeAsync<IJSObjectReference>("import", "./_content/LocalizedStatefulReconnection/LocalizedStatefulReconnection.razor.js").AsTask();
 
             // We don't want to restore the UI until it's finished any loading tasks. There isn't a public API for observing
             // quiescence so we'll bypass the problem with some reflection. If necessary a public API can be added.
