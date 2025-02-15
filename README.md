@@ -27,7 +27,8 @@ dotnet add package LocalizedStatefulReconnection
 
 In _Imports.razor add:
 ```csharp
-@inject IStringLocalizer<App> Loc;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<App> Loc
 ```
 
 In your `App.razor` file add `<LocalizedStatefulReconnection />` before or after your `<Router />`. Example: 
