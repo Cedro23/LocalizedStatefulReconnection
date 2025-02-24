@@ -5,13 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-	<PackageVersion>0.1.0</PackageVersion>
+	<PackageVersion>0.2.0</PackageVersion>
 	<Authors>Steve Sanderson, Cédric Lesueur</Authors>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<Version>0.1.0</Version>
+	<Version>0.2.0</Version>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<RepositoryUrl>https://github.com/Cedro23/LocalizedStatefulReconnection</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
+	<Title>Localized Stateful Reconnection</Title>
   </PropertyGroup>
 
   <ItemGroup>
